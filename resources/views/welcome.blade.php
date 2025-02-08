@@ -13,12 +13,7 @@
             background: linear-gradient(135deg, #f0f8ff, #e6f7ff);
             font-family: Arial, sans-serif;
         }
-        .container {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
+       
         .card {
             border: none;
             border-radius: 10px;
@@ -78,44 +73,58 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg" style="background-color: #1e3d58;">
-    <div class="container">
-        <a class="navbar-brand text-white" href="#"><i class="fas fa-exchange-alt"></i> Converter Website</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#"><i class="fas fa-home"></i> Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#"><i class="fas fa-info-circle"></i> About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#"><i class="fas fa-envelope"></i> Contact</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+@include('header') 
 
-    <div class="container my-5">
+
+   
         <h1 class="text-center mb-4">Welcome to the Converter Website</h1>
 
         <!-- Row of Converter Boxes -->
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             <!-- Video Converter -->
             <div class="col">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <i class="fas fa-video fa-3x mb-3"></i>
-                        <h5 class="card-title">Video Converter</h5>
-                        <p class="card-text">Convert your video files easily.</p>
-                        <a href="{{ url('video_converter') }}" class="btn btn-primary">Go to Video Converter</a>
-                    </div>
-                </div>
-            </div>
+            <div class="card text-center">
+            <div class="card-body">
+    <i class="fas fa-video fa-3x mb-3"></i>
+    <h5 class="card-title">Video Converter</h5>
+    <p class="card-text">Convert your video files easily.</p>
+    
+    <select class="form-select mb-3" id="videoFormat">
+        <option selected disabled>Select Video Format</option>
+        <option value="3g2">3G2 Converter</option>
+        <option value="3gp">3GP Converter</option>
+        <option value="avi">AVI Converter</option>
+        <option value="flv">FLV Converter</option>
+        <option value="mkv">MKV Converter</option>
+        <option value="mov">MOV Converter</option>
+        <option value="mp4">MP4 Converter</option>
+        <option value="mpg">MPG Converter</option>
+        <option value="ogv">OGV Converter</option>
+        <option value="webm">WEBM Converter</option>
+        <option value="wmv">WMV Converter</option>
+    </select>
+
+    <a href="#" id="videoConvertBtn" class="btn btn-primary">Go to Video Converter</a>
+</div>
+</div>
+</div>
+
+<script>
+    document.getElementById("videoFormat").addEventListener("change", function() {
+        let format = this.value;
+        let convertBtn = document.getElementById("videoConvertBtn");
+        convertBtn.href = `/${format}-videoconverter`; // Set correct route URL
+    });
+
+    document.getElementById("videoConvertBtn").addEventListener("click", function(event) {
+        let format = document.getElementById("videoFormat").value;
+        if (!format) {
+            event.preventDefault(); // Prevent navigation if no format is selected
+            alert("Please select a video format.");
+        }
+    });
+</script>
+
 
             <!-- Audio Converter -->
             <div class="col">
@@ -259,15 +268,7 @@
             </div>
         </div>
     </div>
-    <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2025 Converter Website. All Rights Reserved.</p>
-        <div>
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-        </div>
-    </footer>
+    @include('footer') 
 
 
     <!-- Bootstrap JS (Optional but recommended) -->

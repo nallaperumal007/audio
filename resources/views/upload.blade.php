@@ -16,7 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body class="bg-light">
-
+@include('header') 
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -55,6 +55,7 @@
         </div>
     </div>
 </div>
+@include('footer') 
 
 <script>
     $(document).ready(function () {

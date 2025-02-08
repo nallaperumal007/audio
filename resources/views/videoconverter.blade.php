@@ -1,18 +1,20 @@
+@include('header')
+
 @php
-    $selectedFormat = $format; // Get the selected format from URL
-    $formats = ['mp3', 'aac', 'aiff', 'flac', 'm4a', 'm4r', 'mmf', 'ogg', 'opus', 'wav', 'wma'];
+    $selectedFormat = $format;
+    $formats = ['3g2', '3gp', 'avi', 'flv', 'mkv', 'mov', 'mp4', 'mpg', 'ogv', 'webm', 'wmv'];
 @endphp
 
 <div class="col">
     <div class="card text-center p-4">
         <div class="card-body">
-            <p class="card-text mb-2">Select an audio format:</p>
+            <p class="card-text mb-2">Select a video format to convert to:</p>
             <div class="d-flex flex-wrap justify-content-center">
                 @foreach($formats as $format)
                     @if($format !== $selectedFormat)
                         <label class="format-box">
                             <strong>{{ strtoupper($selectedFormat) }}</strong> TO
-                            <input type="radio" name="audioFormat" value="{{ $format }}" onchange="redirectToFormat('{{ $format }}')">
+                            <input type="radio" name="videoFormat" value="{{ $format }}" onchange="redirectToFormat('{{ $format }}')">
                             <span>{{ strtoupper($format) }}</span>
                         </label>
                     @endif
@@ -57,15 +59,8 @@
 <script>
     function redirectToFormat(targetFormat) {
         let selectedFormat = @json($selectedFormat);
-        if (!selectedFormat) {
-            alert("No input format selected.");
-            return;
-        }
         
-        // Format the URL as required
-        let newUrl = `/${selectedFormat}/${selectedFormat.toUpperCase()}-TO-${targetFormat.toUpperCase()}`;
-        
-        // Redirect to the new formatted URL
-        window.location.href = newUrl;
-    }
+    window.location.href = `/video/${selectedFormat}/${targetFormat}`;   }
 </script>
+
+@include('footer')

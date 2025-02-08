@@ -1,78 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choose File to Convert</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #4facfe, #00f2fe); /* Blue gradient */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+@include('header')
 
-        .card {
-            border-radius: 25px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
-            padding: 3rem;
-            background-color: #fff;
-            width: 100%;
-            max-width: 650px;
-            border: none;
-        }
+@php
+    $fromFormat = request()->route('from');
+    $toFormat = request()->route('to');
+@endphp
 
-        .card-header {
-            text-align: center;
-            font-size: 2rem;
-            font-weight: bold;
-            color: #4facfe;
-            margin-bottom: 2rem;
-        }
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card text-center p-4">
+                <div class="card-body">
+                    <i class="fas fa-video fa-3x mb-3 text-success"></i>
+                    <h4 class="card-title mb-3">Upload Your Video File</h4>
 
-        .btn {
-            background: linear-gradient(135deg, #4facfe, #00f2fe);
-            color: white;
-            border: none;
-            font-size: 1.5rem;
-            border-radius: 50px;
-            padding: 16px 40px;
-            transition: transform 0.3s, background 0.4s ease-in-out;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-            width: 100%;
-        }
+                    <p class="alert alert-info">
+                        Convert <strong>{{ strtoupper($fromFormat) }}</strong> to <strong>{{ strtoupper($toFormat) }}</strong>
+                    </p>
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+                    <form id="videoForm" action="{{ route('convert-video') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="fromFormat" value="{{ $fromFormat }}">
+                        <input type="hidden" name="toFormat" value="{{ $toFormat }}">
 
-        .form-control {
-            border-radius: 12px;
-            padding: 10px;
-            font-size: 1.2rem;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="card">
-            <div class="card-header">
-                Upload Your Audio File
-            </div>
-            <form action="{{ url('/audio-converter/'.$inputFormat.'-to-'.$outputFormat) }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="form-group">
-                    <label for="audioFile">Choose Your Audio File</label>
-                    <input type="file" name="audio" id="audioFile" class="form-control" required accept="audio/*">
+                        <div class="mb-3">
+                            <label class="form-label">Choose Video File:</label>
+                            <input type="file" name="videoFile" class="form-control" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Convert & Download</button>
+                    </form>
+
+                    <div id="loading" class="mt-3" style="display: none;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Processing...</span>
+                        </div>
+                        <p>Processing your video file...</p>
+                    </div>
                 </div>
-
-                <button type="submit" class="btn mt-3">Convert</button>
-            </form>
+            </div>
         </div>
     </div>
-</body>
-</html>
+</div>
+
+@include('footer')

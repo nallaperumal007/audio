@@ -1,3 +1,5 @@
+@include('header') <!-- Include Header -->
+
 @php
     $selectedFormat = $format; // Get the selected format from URL
     $formats = ['mp3', 'aac', 'aiff', 'flac', 'm4a', 'm4r', 'mmf', 'ogg', 'opus', 'wav', 'wma'];
@@ -6,25 +8,22 @@
 <div class="col">
     <div class="card text-center p-4">
         <div class="card-body">
-          
             <p class="card-text mb-2">Select an audio format:</p>
             <div class="d-flex flex-wrap justify-content-center">
                 @foreach($formats as $format)
                     @if($format !== $selectedFormat)
                         <label class="format-box">
                             <strong>{{ strtoupper($selectedFormat) }}</strong> TO
-                            <input type="radio" name="audioFormat" value="{{ $format }}">
+                            <input type="radio" name="audioFormat" value="{{ $format }}" onchange="redirectToFormat('{{ $format }}')">
                             <span>{{ strtoupper($format) }}</span>
                         </label>
                     @endif
                 @endforeach
             </div>
-
-            <br>
-            <button id="convertBtn" class="btn btn-primary mt-3" type="button">Convert Audio</button>
         </div>
     </div>
 </div>
+@include('footer') 
 
 <style>
     .format-box {
@@ -59,27 +58,17 @@
 </style>
 
 <script>
-    document.getElementById("convertBtn").addEventListener("click", function(event) {
-        let selected = document.querySelector(".format-box input:checked");
-
-        if (!selected) {
-            event.preventDefault();
-            alert("Please select an audio format.");
-            return;
-        }
-
-        let targetFormat = selected.value.toUpperCase();
+    function redirectToFormat(targetFormat) {
         let selectedFormat = @json($selectedFormat);
-
         if (!selectedFormat) {
             alert("No input format selected.");
             return;
         }
-
+        
         // Format the URL as required
-        let newUrl = `/${selectedFormat}-converter/${selectedFormat.toUpperCase()}-TO-${targetFormat}`;
+        let newUrl = `/audio/${selectedFormat}/${selectedFormat.toUpperCase()}-TO-${targetFormat.toUpperCase()}`;
         
         // Redirect to the new formatted URL
         window.location.href = newUrl;
-    });
+    }
 </script>
